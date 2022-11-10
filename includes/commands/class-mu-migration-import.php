@@ -126,7 +126,12 @@ class ImportCommand extends MUMigrationBase {
 
 						//Inserts all custom meta data
 						foreach ( $user_meta_data as $meta_key => $meta_value ) {
-							update_user_meta( $new_id, $meta_key, maybe_unserialize( $meta_value ) );
+							$meta_value = maybe_unserialize( $meta_value );
+							if ( $meta_value instanceof \__PHP_Incomplete_Class ) {
+								continue;
+							}
+
+							update_user_meta( $new_id, $meta_key, $meta_value );
 						}
 
 						/**
